@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.playmate"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="15"
+        android:targetSdkVersion="15"/>
+
+   
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+ 
+    <permission
+        android:name="com.example.playmate.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+    
+    <uses-permission android:name="com.vogella.android.locationapi.maps.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />    
+     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission  android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission  android:name="android.permission.ACCESS_FINE_LOCATION" />
+      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />    
+    
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:theme="@style/CustomActionBarTheme"
+        android:label="PlayMate" 
+        
+        >     
+          
+        <meta-data
+        android:name="com.google.android.gms.version"
+        android:value="@integer/google_play_services_version" />
+        
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyDfZz0SnVNVc_Sfodc_JDc2OixA1Fq_GoU" />       
+        
+        
+                <activity
+             android:name=".Location"
+             android:label="Locate yourself"
+             ></activity>  
+                
+         <activity
+            android:name=".SplashScreen"
+            android:label="PlayMate"
+            android:screenOrientation="portrait"       
+          >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+ 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+    
+        
+             <activity
+            android:name=".MainDb"
+             >     
+            
+        </activity>
+        
+             <activity
+                 android:name=".New_Post"
+                 android:theme="@android:style/Theme.Holo.Dialog"
+                 android:label="Write your post"
+                 ></activity>
+        
+          <activity
+            android:name=".OneTimeRegister"
+            android:label="Register" >            
+        </activity>      
+        
+            
+        <uses-library android:name="com.google.android.maps" />
+             
+    </application>
+
+</manifest>
