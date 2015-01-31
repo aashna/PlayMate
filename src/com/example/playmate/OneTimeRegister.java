@@ -18,12 +18,14 @@ import com.loopj.android.http.RequestParams;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -295,9 +297,12 @@ public class OneTimeRegister extends Activity {
 				  String check_name = name.getText().toString();
 				  EditText phone= (EditText)findViewById(R.id.editText2);
 				   num=phone.getText().toString();
-				   
-				   DataHolder d=(DataHolder)getApplicationContext();
-				   d.setData(num);
+
+				   SharedPreferences applicationpreferences = PreferenceManager.getDefaultSharedPreferences(OneTimeRegister.this);
+	               SharedPreferences.Editor editor = applicationpreferences .edit();
+	               
+	               editor.putString("phone_number", num);
+	               editor.commit();
 				  
 				  uploadImage(v);	  
 

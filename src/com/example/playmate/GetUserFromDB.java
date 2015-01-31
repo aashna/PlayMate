@@ -29,32 +29,25 @@ public class GetUserFromDB {
           params.add(new BasicNameValuePair("phone", phone));
 
           
-          Log.e("GetUserFromDBError","> " + "post received");
+          Log.e("GetUserFromDB","> " + "post received");
           Log.e("PhoneNumber","> " + phone);
 
           HttpPost httppost;
           HttpClient httpclient;
           httpclient = new DefaultHttpClient();
           httppost = new HttpPost("http://aashna.webatu.com/GetUserIDFromDb.php");
-
-          
+          httppost.setEntity(new UrlEncodedFormEntity(params));
+ 
           HttpResponse response = httpclient.execute(httppost); 
           HttpEntity entity = response.getEntity();
           is = entity.getContent();
 
-          Log.e("log_tag", "connection success ");
-          
-          Log.e("Response="+response, "");
-           
-          //return response.trim();
-          
+          Log.e("log_tag", "connection success ");         
 
       } catch(Exception e)
       {
           Log.e("log_tag", "Error in http connection "+e.toString());
-         // Toast.makeText(getApplicationContext(), "Connection fail", Toast.LENGTH_SHORT).show();
           return "error";
-
   }
     //convert response to string
       try
@@ -69,17 +62,12 @@ public class GetUserFromDB {
               is.close();
 
               result=sb.toString();
-              
-    //          Log.e("Result=",""+result);
               return result;
       }
       catch(Exception e)
       {
              Log.e("log_tag", "Error converting result "+e.toString());
              return "error";
-
       }
   }
-
-
 }

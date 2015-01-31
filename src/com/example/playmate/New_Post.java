@@ -11,25 +11,26 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.loopj.android.http.RequestParams;
 
 public class New_Post extends Activity implements OnClickListener{
 	
 	int post_type=0; String data="";
-	private String URL_NEWPOST = "http://aashna.webatu.com/user_post.php";
+	private String URL_NEWPOST = "http://aashna.webatu.com/write_post.php";
 	private static final String TAG = "New_Post-Error";
 	String encodedString;
 	ProgressDialog prgDialog;
@@ -122,29 +123,24 @@ public class New_Post extends Activity implements OnClickListener{
 	 String postType=String.valueOf(arg[1]);
 	 String user_name="";
 	 String user_id="";
-	 
-//	 Intent newpost_intent=getIntent();
-	// String username=newpost_intent.getStringExtra("username");
-	// String phone=newpost_intent.getStringExtra("phone");
-	 
-	 DataHolder d=(DataHolder)getApplicationContext();
-	 String phone=d.getData();
-	 
-	// String phone=((OneTimeRegister)getApplicationContext()).num;
-//	 TelephonyManager phoneManager = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-	//		String phone = phoneManager.getLine1Number();
-	 
+
+	 SharedPreferences applicationpreferences = PreferenceManager.getDefaultSharedPreferences(New_Post.this);
+	 String phone=applicationpreferences.getString("phone_number", "");
 	 Log.e("New_Post:Phone=",""+phone);
-	 
+
 	 try{
 		 GetUserFromDB getdb = new GetUserFromDB();
 		 data = getdb.getUserFromDB(phone);
 		 System.out.println(data);
+		 Log.e("Data=",""+data);
 		 
 		 JSONArray ja=new JSONArray(data);
-		 JSONObject json_data = ja.getJSONObject(0);
+		 for (int i = 0; i < ja.length(); i++) {
+		 JSONObject json_data = ja.getJSONObject(i);
 		 user_id=json_data.getString("Id");
+		 Log.e("Id=",""+user_id);
 		 user_name=json_data.getString("UserName");
+		 Log.e("username=",""+user_name);}
 	}
 	catch(Exception ex){
 	System.out.println("NEWPost Exception"+ex);
