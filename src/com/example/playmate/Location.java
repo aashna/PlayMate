@@ -170,9 +170,15 @@ public class Location extends Activity
 	          {				  	 				              
 	        	  new AddLocation().execute(String.valueOf(lat),String.valueOf(longit)); 
 	        	  
+	        		 Intent reg_intent=getIntent();
+	        		 String phone=reg_intent.getStringExtra("phone");
+	        		 String user=reg_intent.getStringExtra("username");
+	        	  
 	        	  Intent i = new Intent(Location.this, MainDb.class);
 	        	  i.putExtra("latitude", Double.toString(lat));
 	        	  i.putExtra("longitude",Double.toString(longit));
+	        	  i.putExtra("phone", phone);
+	        	  i.putExtra("username", user);
 	              startActivity(i);
 	              finish();
 	          }

@@ -6,7 +6,7 @@
     android:background="@drawable/env">
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/enter_post"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -42,7 +42,7 @@
             android:src="@drawable/ad" />
 
         <ImageButton
-            android:id="@+id/imageButton1"
+            android:id="@+id/meetup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/meetup" />

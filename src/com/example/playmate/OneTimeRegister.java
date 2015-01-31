@@ -45,6 +45,7 @@ public class OneTimeRegister extends Activity {
     String imgPath, fileName;
     Bitmap bitmap;
     private static int RESULT_LOAD_IMG = 1;
+    String num=null;
 
 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -293,80 +294,21 @@ public class OneTimeRegister extends Activity {
 	        	  EditText name= (EditText)findViewById(R.id.editText1);
 				  String check_name = name.getText().toString();
 				  EditText phone= (EditText)findViewById(R.id.editText2);
-				  String num=phone.getText().toString();
+				   num=phone.getText().toString();
+				   
+				   DataHolder d=(DataHolder)getApplicationContext();
+				   d.setData(num);
 				  
 				  uploadImage(v);	  
-				              
-	        	//  new AddNewPrediction().execute(check_name,num); 
-	        	  
+
 	        	  Intent i = new Intent(OneTimeRegister.this, Location.class);
 	        	  i.putExtra("username", check_name);
 	        	  i.putExtra("phone", num);
+	        	  
 	        	  i.putExtra("image", fileName);
 	              startActivity(i);
 	              finish();
 	          }
 	        });		 
 	 }	
-	 /*
-	 private class AddNewPrediction extends AsyncTask<String, Void, Void> {
-
-	        @Override
-	        protected void onPreExecute() {
-	            super.onPreExecute();
-	        }
-	 
-	 @Override
-     protected Void doInBackground(String... arg) {
-         // TODO Auto-generated method stub
-         String username = arg[0];
-         String phone = arg[1];
-     
-         Log.e("Username=",""+username);
-         Log.e("Phone Number=", ""+phone);
-        
-
-         // Preparing post params
-         List<NameValuePair> params = new ArrayList<NameValuePair>();
-         params.add(new BasicNameValuePair("UserName", username));
-         params.add(new BasicNameValuePair("PhoneNumber", phone));
-         params.add(new BasicNameValuePair("ImageName", fileName));
-
-         ServiceHandler serviceClient = new ServiceHandler();
-
-         String json = serviceClient.makeServiceCall(URL_LOGIN_INFO,
-                 ServiceHandler.POST, params);
-
-         Log.d("Create Prediction Request: ", "> " + json);
-
-         if (json != null) {
-             try {
-                 JSONObject jsonObj = new JSONObject(json);
-                 boolean error = jsonObj.getBoolean("error");
-                 // checking for error node in json
-                 
-                 if (!error) {
-                     // new category created successfully
-                     Log.e("Prediction added successfully ",
-                             "> " + jsonObj.getString("message"));
-                     
-                 } else {
-                     Log.e(TAG,
-                             "> " + jsonObj.getString("message"));
-                 }
-
-             } catch (JSONException e) {
-                 e.printStackTrace();
-             }
-
-         } else {
-             Log.e(TAG, "JSON data error!");
-         }
-         return null;
-     }
-
-     protected void onPostExecute(Void result) {
-         super.onPostExecute(result);
-     }
- }*/
 }

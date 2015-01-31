@@ -97,7 +97,15 @@ public class MainDb extends Activity {
 	           // openSearch();
 	            return true;
 	        case R.id.action_compose:
+	        	Intent maindb_intent=getIntent();
+       		    String phone=maindb_intent.getStringExtra("phone");
+       		    String username=maindb_intent.getStringExtra("username");
+       		    
+       		    Log.e("Phone(MainDB)=",""+phone);
+       		 
 	            Intent compose_intent=new Intent(MainDb.this,New_Post.class);
+	            compose_intent.putExtra("phone", phone);
+	            compose_intent.putExtra("username", username);
 	            startActivity(compose_intent);
 	            return true;
 	        default:
