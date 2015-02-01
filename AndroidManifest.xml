@@ -31,8 +31,7 @@
         android:icon="@drawable/ic_launcher"
         android:theme="@style/CustomActionBarTheme"
         android:label="PlayMate" 
-        android:name="com.example.playmate.DataHolder"
-        
+               
         >     
           
         <meta-data
