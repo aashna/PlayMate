@@ -11,8 +11,10 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,6 +47,13 @@ public class MainDb extends Activity {
 		Intent reg_intent=getIntent();
 		  orig_lat=reg_intent.getStringExtra("latitude");
 		  orig_long=reg_intent.getStringExtra("longitude");
+		  
+		  if(orig_lat==null && orig_long==null)
+		  {
+		  SharedPreferences applicationpreferences = PreferenceManager.getDefaultSharedPreferences(MainDb.this);
+			 orig_lat=applicationpreferences.getString("latitude", "");
+			 orig_long=applicationpreferences.getString("longitude", "");
+		  }
 		 
 		new call_url().execute("");	
 		
@@ -63,6 +72,8 @@ public class MainDb extends Activity {
 		protected String doInBackground(String... params) {
 				try{
 					 GetDataFromDB getdb = new GetDataFromDB();
+					 
+					 
 					 data = getdb.getDataFromDB(orig_lat,orig_long);
 					 System.out.println(data);
 				}
@@ -97,15 +108,7 @@ public class MainDb extends Activity {
 	           // openSearch();
 	            return true;
 	        case R.id.action_compose:
-	        	Intent maindb_intent=getIntent();
-       		    String phone=maindb_intent.getStringExtra("phone");
-       		    String username=maindb_intent.getStringExtra("username");
-       		    
-       		    Log.e("Phone(MainDB)=",""+phone);
-       		 
 	            Intent compose_intent=new Intent(MainDb.this,New_Post.class);
-	            compose_intent.putExtra("phone", phone);
-	            compose_intent.putExtra("username", username);
 	            startActivity(compose_intent);
 	            return true;
 	        default:
@@ -171,11 +174,20 @@ public class MainDb extends Activity {
 	                user.setUserName(json_data.getString("UserName"));
 	                user.setPost(json_data.getString("Post"));
 	                user.setDistance(json_data.getString("distance"));
+	                user.setTime(json_data.getString("Time"));
 	                
-	                String IMG_URL;
-	                IMG_URL="http://aashna.webatu.com/uploadedimages/"+json_data.getString("ProfilePic");
+	                String IMG_URL_PROFILE;
+	                IMG_URL_PROFILE="http://aashna.webatu.com/uploadedimages/"+json_data.getString("ProfilePic");
+	                user.setProfileImage(IMG_URL_PROFILE);
 	                
-	                user.setImage(IMG_URL);	                 
+	                String IMG_URL_POST=null;
+	                
+	                if(json_data.getString("Image")!=null)
+	                {
+	                IMG_URL_POST="http://aashna.webatu.com/uploadedimages/"+json_data.getString("Image");
+	                user.setPostedImage(IMG_URL_POST);
+	                }
+
 	                users.add(user);
 	            }
 	        } catch (JSONException e) {

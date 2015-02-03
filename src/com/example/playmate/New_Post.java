@@ -55,6 +55,9 @@ public class New_Post extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_post_dialog);
+        
+        prgDialog = new ProgressDialog(this);
+        prgDialog.setCancelable(false);
 
         addListeners();
 	}
@@ -66,7 +69,7 @@ public class New_Post extends Activity implements OnClickListener{
 		ImageButton ad=(ImageButton)findViewById(R.id.ad);
 		ImageButton meetup=(ImageButton)findViewById(R.id.meetup);
 		ImageButton donation=(ImageButton)findViewById(R.id.donation);
-		ImageButton pic=(ImageButton)findViewById(R.id.pic);
+		Button pic=(Button)findViewById(R.id.pic);
 		Button ok_button=(Button)findViewById(R.id.ok);
 		Button cancel_button=(Button)findViewById(R.id.cancel);
 		
@@ -256,9 +259,10 @@ public class New_Post extends Activity implements OnClickListener{
             post_type=5;
             break;
         case R.id.pic:
-            post_type=6;
+        {
             loadImagefromGallery(v);
             break; 
+        }
         case R.id.ok:
 	        {
 	       	 EditText enter_post=(EditText)findViewById(R.id.enter_post);
@@ -274,6 +278,16 @@ public class New_Post extends Activity implements OnClickListener{
         	finish();
 		}	
 	}	
+	
+	@Override
+    protected void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+        // Dismiss the progress bar when application is closed
+        if (prgDialog != null) {
+            prgDialog.dismiss();
+        }
+    }
 	private class AddPost extends AsyncTask<String,Void,Void> {
 
         private static final String TAG = "NewPostError";
@@ -322,7 +336,7 @@ public class New_Post extends Activity implements OnClickListener{
      TimeZone tz = TimeZone.getTimeZone("GMT+05:30");
      Calendar c = Calendar.getInstance(tz);
      String time =String.format("%02d" , c.get(Calendar.DAY_OF_MONTH))+"/"+ 
-    		    String.format("%02d" , c.get(Calendar.MONTH))+"/"+
+    		    String.format("%02d" , (c.get(Calendar.MONTH)+1))+"/"+
                   String.format("%02d" , c.get(Calendar.YEAR))+"-"+
     		 String.format("%02d" , c.get(Calendar.HOUR_OF_DAY))+":"+
                  String.format("%02d" , c.get(Calendar.MINUTE))+":"+
@@ -368,6 +382,8 @@ public class New_Post extends Activity implements OnClickListener{
      }
      return null;
  }
+ 
+ 
 
  protected void onPostExecute(Void result) {
      super.onPostExecute(result);

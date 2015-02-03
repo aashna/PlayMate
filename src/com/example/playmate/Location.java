@@ -11,10 +11,12 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -177,6 +179,15 @@ public class Location extends Activity
 	        	  Intent i = new Intent(Location.this, MainDb.class);
 	        	  i.putExtra("latitude", Double.toString(lat));
 	        	  i.putExtra("longitude",Double.toString(longit));
+	        	  
+	        	  SharedPreferences applicationpreferences = PreferenceManager.getDefaultSharedPreferences(Location.this);
+	               SharedPreferences.Editor editor = applicationpreferences .edit();
+	               
+	               editor.putString("latitude", Double.toString(lat));
+	               editor.putString("longitude", Double.toString(longit));
+	               editor.putString("phone_number", phone);	             
+	               editor.commit();
+	               
 	        	  i.putExtra("phone", phone);
 	        	  i.putExtra("username", user);
 	              startActivity(i);

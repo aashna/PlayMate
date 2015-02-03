@@ -2,7 +2,7 @@ package com.example.playmate.models;
 
 public class User_Post {
 	
-	private String Id,UserName,PhoneNumber,ProfilePic,Post,IMG_URL,Distance;	
+	private String Id,UserName,PhoneNumber,ProfilePic,Post,IMG_URL_PROFILE,IMG_URL_POSTED,Distance,Time;	
 
 	 public void setId(String Id){
 	    this.Id= Id;
@@ -16,8 +16,11 @@ public class User_Post {
 		    this.UserName=UserName;
 		 }
 	 
-	 public void setImage(String IMG_URL){
-		    this.IMG_URL=IMG_URL;
+	 public void setProfileImage(String IMG_URL){
+		    this.IMG_URL_PROFILE=IMG_URL;
+		 }
+	 public void setPostedImage(String IMG_URL){
+		    this.IMG_URL_POSTED=IMG_URL;
 		 }
 	 
 	 public void setPhoneNumber(String PhoneNumber){
@@ -35,6 +38,10 @@ public class User_Post {
 		    this.Post = Post;
 		 }
 	 
+	 public void setTime(String Time){
+		    this.Time = Time;
+		 }
+	 
 	 public String getPhoneNumber(){
 		    return this.PhoneNumber;
 		 }
@@ -50,9 +57,18 @@ public class User_Post {
 		 public String getId(){
 			    return this.Id;
 			 }
+		 
+		 public String getTime(){
+			    return this.Time;
+			 }
 
-		public String getImage() {
+		public String getProfileImage() {
 			// TODO Auto-generated method stub
-			return this.IMG_URL;
-		}	 
+			return this.IMG_URL_PROFILE;
+		}	
+		
+		public String getPostedImage() {
+			// TODO Auto-generated method stub
+			return this.IMG_URL_POSTED;
+		}
 }

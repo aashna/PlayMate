@@ -29,10 +29,7 @@ public class LazyAdapter extends BaseExpandableListAdapter {
     public ImageLoader imageLoader; 
     
     private Context _context;
- //   private List<String> _listDataHeader; // header titles
-    // child data in format of header title, child title
-   // private HashMap<String, List<String>> _listDataChild;
- 
+
     public LazyAdapter(Context context, ArrayList<User_Post> d,
             ArrayList<User_Post> listChildData) {
         this._context = context;
@@ -41,15 +38,6 @@ public class LazyAdapter extends BaseExpandableListAdapter {
         
         imageLoader=new ImageLoader(context);
     }
-    
-  /*  
-    public LazyAdapter(Activity a, ArrayList<User_Post> d) {
-        activity = a;
-        data=d;
-        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        imageLoader=new ImageLoader(activity.getApplicationContext());
-    }   */
-
 
     public int getCount() {
         return data.size();
@@ -81,6 +69,8 @@ public class LazyAdapter extends BaseExpandableListAdapter {
      //   user_name.setText(headerTitle);
         TextView post = (TextView)convertView.findViewById(R.id.post); // Post of the User
         TextView distance = (TextView)convertView.findViewById(R.id.dist); // Distance
+        TextView time = (TextView)convertView.findViewById(R.id.time); // Timestamp
+        ImageView posted_image=(ImageView)convertView.findViewById(R.id.posted_img); // Posted Image
         ImageView thumb_image=(ImageView)convertView.findViewById(R.id.list_image); // Thumb image
         final ImageButton smiley=(ImageButton)convertView.findViewById(R.id.smiley); 
         ImageButton comment=(ImageButton)convertView.findViewById(R.id.comment);
@@ -100,15 +90,10 @@ public class LazyAdapter extends BaseExpandableListAdapter {
         comment.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-
 				 if(isExpanded){ ((ExpandableListView) parent).collapseGroup(position);
-			//	 edit_comment.setVisibility(v.INVISIBLE);
-			//	 enter_comment.setVisibility(v.INVISIBLE);
 				 }
 		          else 
 		          {
-		        //	  edit_comment.setVisibility(v.VISIBLE);
-		        //	  enter_comment.setVisibility(v.VISIBLE);
 		        	  ((ExpandableListView) parent).expandGroup(position, true);  
 		          }
 			}});
@@ -119,10 +104,17 @@ public class LazyAdapter extends BaseExpandableListAdapter {
        //  Setting all values in listview
         user_name.setText(user.getUserName());
         post.setText(user.getPost());
+        time.setText(user.getTime());
         
         Double dist=Double.parseDouble(user.getDistance());
         distance.setText(String.valueOf(dist*1.60934));
-        imageLoader.DisplayImage(user.getImage(), thumb_image);
+        imageLoader.DisplayImage(user.getProfileImage(), thumb_image);
+        
+        if(user.getPostedImage()!=null)
+        {
+        posted_image.setVisibility(convertView.VISIBLE);
+        imageLoader.DisplayImage(user.getPostedImage(), posted_image);
+        }
         return convertView;
     }
 

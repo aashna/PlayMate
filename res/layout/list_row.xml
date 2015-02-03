@@ -124,6 +124,25 @@
              android:visibility="invisible" />
 
     </LinearLayout>
-    
+
+    <ImageView
+        android:id="@+id/posted_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/thumbnail"
+        android:layout_alignRight="@+id/post"
+        android:text="dd/mm/yyyy-hh:mm:ss"
+        android:textColor="#10bcc9"
+        android:textSize="10dip"
+        android:textStyle="italic"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>
