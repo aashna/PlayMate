@@ -261,6 +261,7 @@ public class New_Post extends Activity implements OnClickListener{
             break;
         case R.id.pic:
         {
+        	flag=true;
         	loadImagefromGallery(v);
             break; 
         }
@@ -272,6 +273,7 @@ public class New_Post extends Activity implements OnClickListener{
 	       	 new AddPost().execute(post,String.valueOf(post_type));
 	       	 
 	       	Intent i = new Intent(New_Post.this, MainDb.class);
+	       	i.putExtra("flag", flag);
             startActivity(i);
             finish();
 	        }

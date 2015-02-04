@@ -20,6 +20,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.example.playmate.models.User_Post;
+import com.squareup.picasso.Picasso;
 
 public class LazyAdapter extends BaseExpandableListAdapter {
     
@@ -27,17 +28,16 @@ public class LazyAdapter extends BaseExpandableListAdapter {
     private ArrayList<User_Post> data;
     private ArrayList<User_Post> _listDataChild;
     private static LayoutInflater inflater=null;
-    public ImageLoader imageLoader; 
+    Boolean flag;
     
     private Context _context;
 
     public LazyAdapter(Context context, ArrayList<User_Post> d,
-            ArrayList<User_Post> listChildData) {
+            ArrayList<User_Post> listChildData, Boolean flag) {
         this._context = context;
         this.data = d;
         this._listDataChild = listChildData;
-        
-        imageLoader=new ImageLoader(context);
+        this.flag=flag;
     }
 
     public int getCount() {
@@ -55,13 +55,12 @@ public class LazyAdapter extends BaseExpandableListAdapter {
     public View getGroupView(final int position,final boolean isExpanded, View convertView, final ViewGroup parent) {
         View vi=convertView;
     //    String headerTitle=(String)getGroup(position);
-        if(convertView==null)
-        {
+     
         	 LayoutInflater infalInflater = (LayoutInflater) this._context
                      .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
              convertView = infalInflater.inflate(R.layout.list_row, null);
         	
-        }
+        
         
         final Context context = parent.getContext();      
         
@@ -75,9 +74,7 @@ public class LazyAdapter extends BaseExpandableListAdapter {
         ImageView thumb_image=(ImageView)convertView.findViewById(R.id.list_image); // Thumb image
         final ImageButton smiley=(ImageButton)convertView.findViewById(R.id.smiley); 
         ImageButton comment=(ImageButton)convertView.findViewById(R.id.comment);
-        final ImageButton enter_comment=(ImageButton)convertView.findViewById(R.id.enter_comment);
-        final EditText edit_comment=(EditText)convertView.findViewById(R.id.editText_comment);
-        
+ 
         int comment_id=isExpanded?android.R.drawable.arrow_up_float:android.R.drawable.arrow_down_float;
     
         smiley.setOnClickListener(new OnClickListener(){
@@ -109,14 +106,18 @@ public class LazyAdapter extends BaseExpandableListAdapter {
         
         Double dist=Double.parseDouble(user.getDistance());
         distance.setText(String.valueOf(Math.round(dist*1.60934*100.0)/100.0));
-        imageLoader.DisplayImage(user.getProfileImage(), thumb_image);
+        Picasso.with(context)
+        .load(user.getProfileImage())
+        .into(thumb_image);
         
         if(user.getPostedImage()!=null)
         {
-        	Log.e("PostedURL=",""+user.getPostedImage());            
         posted_image.setVisibility(convertView.VISIBLE);
-        imageLoader.DisplayImage(user.getPostedImage(), posted_image);
+        Picasso.with(context)
+        .load(user.getPostedImage())
+        .into(posted_image);
         }
+
         return convertView;
     }
 

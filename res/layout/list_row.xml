@@ -18,43 +18,76 @@
         android:layout_alignRight="@id/actual_content"
         />
     
-    <RelativeLayout android:id="@+id/actual_content"
+    <LinearLayout android:id="@+id/actual_content"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"  >
+    android:layout_height="wrap_content" 
+    android:orientation="vertical" >
 
     <!-- ListRow Left side Thumbnail image -->
 
-    <LinearLayout
-        android:id="@+id/thumbnail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginRight="5dip"
-        android:background="@drawable/image_bg"
-        android:padding="3dip" >
+ <LinearLayout android:layout_width="match_parent"
+     android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/list_image"
             android:layout_width="60dip"
             android:layout_height="60dip"
             android:src="@drawable/zoozoo" />
-    </LinearLayout>
-
+    
+   <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" 
+        android:id="@+id/user_post"
+        >
+        
+        <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+        android:layout_marginLeft="10dp">
+    
     <!-- User's Name -->
 
     <TextView
         android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/thumbnail"
-        android:layout_toRightOf="@+id/thumbnail"
         android:text="Aashna"
         android:textColor="#040404"
         android:textSize="15dip"
         android:textStyle="bold"
         android:typeface="sans" />
 
-    <!-- Post -->
+    <!-- Distance -->
+
+    <TextView
+        android:id="@+id/dist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/km"
+        android:layout_marginRight="5dp"
+        android:text=" 5.93"
+        android:textColor="#10bcc9"
+        android:textSize="10dip"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/km"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+         android:layout_marginRight="5dp"
+        android:text="km"
+        android:textColor="#10bcc9"
+        android:textSize="10dip"
+        android:textStyle="bold" />
+    
+    </RelativeLayout>
+
+    <!-- Rightend Arrow -->
+    
+       <!-- Post -->
 
     <TextView
         android:id="@+id/post"
@@ -66,103 +99,57 @@
         android:text="Hi there! :) This is my post. "
         android:textColor="#343434"
         android:textSize="15dip"
-        android:textStyle="italic" />
-
-    <!-- Phone Number -->
-
-    <TextView
-        android:id="@+id/dist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/user_name"
-        android:layout_marginRight="20dip"
-        android:gravity="right"
-        android:text=" 5.93"
-        android:textColor="#10bcc9"
-        android:textSize="10dip"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/km"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/user_name"
-        android:gravity="right"
-        android:text="km"
-        android:textColor="#10bcc9"
-        android:textSize="10dip"
-        android:textStyle="bold" />
-
-    <!-- Rightend Arrow -->
-    
-
-
-    <ImageButton
-        android:id="@+id/smiley"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-       android:layout_toLeftOf="@+id/comment"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/smiley" />
-
-    <ImageButton
-        android:id="@+id/comment"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_alignRight="@+id/km"
-        android:layout_marginLeft="5dp"
-        android:src="@drawable/comment" 
-        android:layout_alignParentBottom="true"/>
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:layout_below="@+id/comment">
-
-        <EditText
-            android:id="@+id/editText_comment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:textSize="7dp"
-            android:text="Enter your comment" 
-            android:visibility="invisible"/>"
-
-        <ImageButton
-            android:id="@+id/enter_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/arrow"
-             android:visibility="invisible" />
-
+        android:textStyle="italic"
+        android:layout_marginBottom="20dp" 
+        android:layout_marginLeft="10dp"/>
     </LinearLayout>
+</LinearLayout>
 
     <ImageView
         android:id="@+id/posted_img"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:layout_below="@id/post"
         android:visibility="gone"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="10dp" 
+        android:layout_marginBottom="5dp"
         />
-
-    <TextView
+    
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+     >
+        
+          <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/post"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="10dp"
-        android:gravity="right"
         android:text="dd/mm/yyyy-hh:mm:ss"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentRight="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#10bcc9"
         android:textSize="10dip"
-        android:textStyle="italic" />
-</RelativeLayout>
+        android:layout_marginRight="7dp"
+        android:textStyle="italic|bold" />
+       
+    <ImageButton
+        android:id="@+id/smiley"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+       android:layout_toLeftOf="@+id/comment"
+        android:layout_below="@+id/time"
+        android:src="@drawable/smiley" 
+       android:layout_marginRight="5dp"/>
+
+    <ImageButton
+        android:id="@+id/comment"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/comment" 
+        android:layout_below="@+id/time"
+        android:layout_alignParentRight="true"/>
+    
+    </RelativeLayout>
+    
+</LinearLayout>
 </RelativeLayout>

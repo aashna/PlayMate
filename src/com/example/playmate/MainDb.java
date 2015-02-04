@@ -30,6 +30,7 @@ import com.example.playmate.models.User_Post;
 public class MainDb extends Activity {
 	
 	String data = "";
+	Boolean flag;
 	ExpandableListView list;
     ExpandableListAdapter adapter;
     String orig_lat,orig_long;
@@ -47,6 +48,7 @@ public class MainDb extends Activity {
 		Intent reg_intent=getIntent();
 		  orig_lat=reg_intent.getStringExtra("latitude");
 		  orig_long=reg_intent.getStringExtra("longitude");
+		  flag=reg_intent.getBooleanExtra("flag", false);
 		  
 		  if(orig_lat==null && orig_long==null)
 		  {
@@ -119,7 +121,7 @@ public class MainDb extends Activity {
 		// TODO Auto-generated method stub
 		list=(ExpandableListView)findViewById(R.id.list);
         
-		adapter=new LazyAdapter(this, users, users);       
+		adapter=new LazyAdapter(this, users, users,flag);       
  
         list.setAdapter(adapter);		
 	}
@@ -181,12 +183,11 @@ public class MainDb extends Activity {
 	                user.setProfileImage(IMG_URL_PROFILE);
 	                
 	                String IMG_URL_POST=null;
-	                
-	                if(json_data.getString("Image")!=null && !json_data.getString("Image").isEmpty()&& !json_data.getString("Image").equals("unnamed.jpg"))
+	                if(!json_data.getString("Image").isEmpty())
 	                {
-	                IMG_URL_POST="http://aashna.webatu.com/uploadedimages/"+json_data.getString("Image");
-	                user.setPostedImage(IMG_URL_POST);
+	                 IMG_URL_POST="http://aashna.webatu.com/uploadedimages/"+json_data.getString("Image");
 	                }
+	                user.setPostedImage(IMG_URL_POST);
 
 	                users.add(user);
 	            }
