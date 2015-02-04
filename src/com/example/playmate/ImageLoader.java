@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.widget.ImageView;
 
 public class ImageLoader {
@@ -38,12 +39,15 @@ public class ImageLoader {
     {
         imageViews.put(imageView, url);
         Bitmap bitmap=memoryCache.get(url);
+        
+        
         if(bitmap!=null)
             imageView.setImageBitmap(bitmap);
         else
         {
+        	Log.e("URL=",""+url);
             queuePhoto(url, imageView);
-            imageView.setImageResource(stub_id);
+         //   imageView.setImageResource(stub_id);
         }
     }
         
@@ -160,8 +164,8 @@ public class ImageLoader {
                 return;
             if(bitmap!=null)
                 photoToLoad.imageView.setImageBitmap(bitmap);
-            else
-                photoToLoad.imageView.setImageResource(stub_id);
+        //    else
+          //      photoToLoad.imageView.setImageResource(stub_id);
         }
     }
 

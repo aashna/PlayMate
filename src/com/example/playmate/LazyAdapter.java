@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -107,11 +108,12 @@ public class LazyAdapter extends BaseExpandableListAdapter {
         time.setText(user.getTime());
         
         Double dist=Double.parseDouble(user.getDistance());
-        distance.setText(String.valueOf(dist*1.60934));
+        distance.setText(String.valueOf(Math.round(dist*1.60934*100.0)/100.0));
         imageLoader.DisplayImage(user.getProfileImage(), thumb_image);
         
         if(user.getPostedImage()!=null)
         {
+        	Log.e("PostedURL=",""+user.getPostedImage());            
         posted_image.setVisibility(convertView.VISIBLE);
         imageLoader.DisplayImage(user.getPostedImage(), posted_image);
         }

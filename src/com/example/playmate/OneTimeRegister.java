@@ -297,12 +297,6 @@ public class OneTimeRegister extends Activity {
 				  String check_name = name.getText().toString();
 				  EditText phone= (EditText)findViewById(R.id.editText2);
 				   num=phone.getText().toString();
-
-				//   SharedPreferences applicationpreferences = PreferenceManager.getDefaultSharedPreferences(OneTimeRegister.this);
-	            //   SharedPreferences.Editor editor = applicationpreferences .edit();
-	               
-	             //  editor.putString("phone_number", num);
-	             //  editor.commit();
 				  
 				  uploadImage(v);	  
 

@@ -43,6 +43,7 @@ import com.loopj.android.http.RequestParams;
 public class New_Post extends Activity implements OnClickListener{
 	
 	int post_type=0; String data="";
+	Boolean flag=false;
 	private String URL_NEWPOST = "http://aashna.webatu.com/write_post.php";
 	private static final String TAG = "New_Post-Error";
 	String encodedString;
@@ -260,7 +261,7 @@ public class New_Post extends Activity implements OnClickListener{
             break;
         case R.id.pic:
         {
-            loadImagefromGallery(v);
+        	loadImagefromGallery(v);
             break; 
         }
         case R.id.ok:
@@ -313,25 +314,17 @@ public class New_Post extends Activity implements OnClickListener{
 	 try{
 		 GetUserFromDB getdb = new GetUserFromDB();
 		 data = getdb.getUserFromDB(phone);
-		 System.out.println(data);
-		 Log.e("Data=",""+data);
 		 
 		 JSONArray ja=new JSONArray(data);
 		 for (int i = 0; i < ja.length(); i++) {
 		 JSONObject json_data = ja.getJSONObject(i);
 		 user_id=json_data.getString("Id");
-		 Log.e("Id=",""+user_id);
 		 user_name=json_data.getString("UserName");
-		 Log.e("username=",""+user_name);}
+		 }
 	}
 	catch(Exception ex){
-	System.out.println("NEWPost Exception"+ex);
 	ex.printStackTrace();
 	}
- 
-	 Log.e("Username=",""+user_name);
-     Log.e("New Post=", ""+new_post);
-     Log.e("PostType=",""+postType); 
      
      TimeZone tz = TimeZone.getTimeZone("GMT+05:30");
      Calendar c = Calendar.getInstance(tz);
@@ -341,8 +334,6 @@ public class New_Post extends Activity implements OnClickListener{
     		 String.format("%02d" , c.get(Calendar.HOUR_OF_DAY))+":"+
                  String.format("%02d" , c.get(Calendar.MINUTE))+":"+
                       String.format("%02d" , c.get(Calendar.SECOND));
-     
-     Log.e("Time=",""+time); 
 
      // Preparing post params
      List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -383,8 +374,6 @@ public class New_Post extends Activity implements OnClickListener{
      return null;
  }
  
- 
-
  protected void onPostExecute(Void result) {
      super.onPostExecute(result);
  }

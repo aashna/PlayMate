@@ -182,7 +182,7 @@ public class MainDb extends Activity {
 	                
 	                String IMG_URL_POST=null;
 	                
-	                if(json_data.getString("Image")!=null)
+	                if(json_data.getString("Image")!=null && !json_data.getString("Image").isEmpty()&& !json_data.getString("Image").equals("unnamed.jpg"))
 	                {
 	                IMG_URL_POST="http://aashna.webatu.com/uploadedimages/"+json_data.getString("Image");
 	                user.setPostedImage(IMG_URL_POST);
