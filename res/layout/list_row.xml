@@ -58,6 +58,18 @@
         android:textSize="15dip"
         android:textStyle="bold"
         android:typeface="sans" />
+    
+     <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dd/mm/yyyy-hh:mm:ss"
+        android:layout_below="@+id/user_name"
+        android:layout_alignParentLeft="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#994C00"
+        android:textSize="10dip"
+        />
 
     <!-- Distance -->
 
@@ -85,7 +97,7 @@
     
     </RelativeLayout>
 
-    <!-- Rightend Arrow -->
+   
     
        <!-- Post -->
 
@@ -107,10 +119,11 @@
 
     <ImageView
         android:id="@+id/posted_img"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="fill_parent"
+        android:layout_height="300dp"
         android:visibility="gone"
-        android:layout_marginLeft="60dp"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"        
         android:layout_marginTop="10dp" 
         android:layout_marginBottom="5dp"
         />
@@ -118,36 +131,64 @@
     <RelativeLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
      >
-        
-          <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="dd/mm/yyyy-hh:mm:ss"
-        android:layout_marginBottom="10dp"
-        android:layout_alignParentRight="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#10bcc9"
-        android:textSize="10dip"
-        android:layout_marginRight="7dp"
-        android:textStyle="italic|bold" />
+   <TextView android:id="@+id/favourites"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="no"
+       android:textColor="#994C00"
+        android:textSize="9dip"
+       
+        android:layout_alignLeft="@+id/smiley"
+       />
+   
+   <TextView android:id="@+id/fav"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="favs"
+       android:textColor="#994C00"
+        android:textSize="8dip"
+       android:layout_toRightOf="@+id/favourites"
+       android:layout_marginLeft="1dp"
+       />
+   
+     <TextView android:id="@+id/comment_num"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="no"
+       android:textColor="#994C00"
+        android:textSize="9dip"
+       android:layout_toRightOf="@+id/fav"
+        android:layout_marginLeft="5dp"
+       />
+     
+     <TextView
+         android:id="@+id/num"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentRight="true"
+         android:layout_marginLeft="1dp"
+         android:layout_toRightOf="@+id/comment_num"
+         android:text="comments"
+         android:textColor="#994C00"
+         android:textSize="8dip" />
        
     <ImageButton
         android:id="@+id/smiley"
         android:layout_width="25dp"
         android:layout_height="25dp"
        android:layout_toLeftOf="@+id/comment"
-        android:layout_below="@+id/time"
+        android:layout_below="@+id/favourites"
         android:src="@drawable/smiley" 
-       android:layout_marginRight="5dp"/>
+       android:layout_marginRight="14dp"/>
 
     <ImageButton
         android:id="@+id/comment"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:src="@drawable/comment" 
-        android:layout_below="@+id/time"
-        android:layout_alignParentRight="true"/>
+        android:layout_below="@+id/favourites"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="12dp"/>
     
     </RelativeLayout>
     

@@ -1,9 +1,22 @@
 package com.example.playmate;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,13 +37,13 @@ import com.squareup.picasso.Picasso;
 
 public class LazyAdapter extends BaseExpandableListAdapter {
     
-    private Activity activity;
+    Boolean flag;
+    String post_id;
+    private Context _context;
+	private Activity activity;
     private ArrayList<User_Post> data;
     private ArrayList<User_Post> _listDataChild;
     private static LayoutInflater inflater=null;
-    Boolean flag;
-    
-    private Context _context;
 
     public LazyAdapter(Context context, ArrayList<User_Post> d,
             ArrayList<User_Post> listChildData, Boolean flag) {
@@ -59,14 +72,13 @@ public class LazyAdapter extends BaseExpandableListAdapter {
         	 LayoutInflater infalInflater = (LayoutInflater) this._context
                      .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
              convertView = infalInflater.inflate(R.layout.list_row, null);
-        	
-        
-        
+
         final Context context = parent.getContext();      
         
-        TextView user_name = (TextView)convertView.findViewById(R.id.user_name); // User Name
+    	SharedPreferences applicationpreferences = PreferenceManager.getDefaultSharedPreferences(context);
+   	    final String phone=applicationpreferences.getString("phone_number", "");
         
-     //   user_name.setText(headerTitle);
+        TextView user_name = (TextView)convertView.findViewById(R.id.user_name); // User Name
         TextView post = (TextView)convertView.findViewById(R.id.post); // Post of the User
         TextView distance = (TextView)convertView.findViewById(R.id.dist); // Distance
         TextView time = (TextView)convertView.findViewById(R.id.time); // Timestamp
@@ -74,15 +86,13 @@ public class LazyAdapter extends BaseExpandableListAdapter {
         ImageView thumb_image=(ImageView)convertView.findViewById(R.id.list_image); // Thumb image
         final ImageButton smiley=(ImageButton)convertView.findViewById(R.id.smiley); 
         ImageButton comment=(ImageButton)convertView.findViewById(R.id.comment);
- 
-        int comment_id=isExpanded?android.R.drawable.arrow_up_float:android.R.drawable.arrow_down_float;
-    
+        TextView comment_num = (TextView)convertView.findViewById(R.id.comment_num);
+        TextView favs = (TextView)convertView.findViewById(R.id.favourites);
+
         smiley.setOnClickListener(new OnClickListener(){
 			@Override
-			public void onClick(View v) {
-
-				smiley.setImageResource(R.drawable.smiley_green);
-			
+			public void onClick(View v) {                 
+				 new AddFavourite().execute(position,phone,smiley); 
 			}});
         
         comment.setOnClickListener(new OnClickListener(){
@@ -98,11 +108,14 @@ public class LazyAdapter extends BaseExpandableListAdapter {
         
         User_Post user = new User_Post();
         user = data.get(position);
-        
+        post_id=user.getPostId();
+
        //  Setting all values in listview
         user_name.setText(user.getUserName());
         post.setText(user.getPost());
         time.setText(user.getTime());
+        comment_num.setText(user.getComments());
+        favs.setText(user.getFavs());
         
         Double dist=Double.parseDouble(user.getDistance());
         distance.setText(String.valueOf(Math.round(dist*1.60934*100.0)/100.0));
@@ -117,10 +130,48 @@ public class LazyAdapter extends BaseExpandableListAdapter {
         .load(user.getPostedImage())
         .into(posted_image);
         }
-
         return convertView;
     }
+    private class AddFavourite extends AsyncTask<Object,Void,Void> {
 
+        private static final String TAG = "FavouriteError";
+        String Request;
+        private String URL_FAVOURITE = "http://aashna.webatu.com/favourite.php";
+
+    	@Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+    	@Override
+    	protected Void doInBackground(Object... arg) {
+    		// TODO Auto-generated method stub
+        		int pos=(Integer)(arg[0]);
+    		String ph=(String)(arg[1]);
+    //		ImageButton smiley=(ImageButton)(arg[2]);
+    		
+    		 User_Post user = new User_Post();
+    	     user = data.get(pos);
+    	     String postID=user.getPostId();
+ 
+         if(!ph.equals(user.getPhoneNumber()))        	
+         { 	                  
+          List<NameValuePair> params = new ArrayList<NameValuePair>();
+          params.add(new BasicNameValuePair("post_id", postID));
+
+          ServiceHandler serviceClient = new ServiceHandler();
+
+          String json = serviceClient.makeServiceCall("http://aashna.webatu.com/favourite.php",
+                  ServiceHandler.POST, params);
+
+          Log.e("Created Favourite: ", "> " + json); }
+
+    		return null;
+    	}
+    	 protected void onPostExecute(Void result) {
+    	     super.onPostExecute(result);
+    	 }	
+    }
     
 	@Override
 	public int getGroupCount() {
@@ -221,3 +272,4 @@ public class LazyAdapter extends BaseExpandableListAdapter {
 		return true;
 	}
 }
+

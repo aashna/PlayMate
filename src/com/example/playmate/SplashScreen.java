@@ -30,7 +30,7 @@ public class SplashScreen extends Activity{
 
             	if (flag) {
             	///Main activity
-            	Intent i = new Intent(SplashScreen.this, MainDb.class);
+            	Intent i = new Intent(SplashScreen.this, Location.class);
                 startActivity(i);
 
             	}else{

@@ -174,6 +174,7 @@ public class New_Post extends Activity implements OnClickListener{
 	                prgDialog.setMessage("Calling Upload");
 	                // Put converted Image string into Async Http Post param
 	                params.put("image", encodedString);
+	                Log.e("IMAGE_Encoded String","> " + encodedString);
 	                // Trigger Image upload
 	                triggerImageUpload();
 	            }
@@ -271,6 +272,7 @@ public class New_Post extends Activity implements OnClickListener{
 	       	 String post=enter_post.getText().toString();
 	       	 
 	       	 new AddPost().execute(post,String.valueOf(post_type));
+	       	 uploadImage(v);	
 	       	 
 	       	Intent i = new Intent(New_Post.this, MainDb.class);
 	       	i.putExtra("flag", flag);

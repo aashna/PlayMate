@@ -2,10 +2,10 @@ package com.example.playmate.models;
 
 public class User_Post {
 	
-	private String Id,UserName,PhoneNumber,ProfilePic,Post,IMG_URL_PROFILE,IMG_URL_POSTED,Distance,Time;	
+	private String PostId,UserName,PhoneNumber,ProfilePic,Post,IMG_URL_PROFILE,IMG_URL_POSTED,Distance,Time,Favs,Comments;	
 
-	 public void setId(String Id){
-	    this.Id= Id;
+	 public void setPostId(String PostId){
+	    this.PostId= PostId;
 	 }
 
 	 public String getUserName(){
@@ -54,8 +54,8 @@ public class User_Post {
 		    return this.ProfilePic;
 		 }
 		 
-		 public String getId(){
-			    return this.Id;
+		 public String getPostId(){
+			    return this.PostId;
 			 }
 		 
 		 public String getTime(){
@@ -71,4 +71,20 @@ public class User_Post {
 			// TODO Auto-generated method stub
 			return this.IMG_URL_POSTED;
 		}
+		
+		 public void setFavs(String Favs){
+			    this.Favs= Favs;
+			 }
+
+			 public String getFavs(){
+			    return this.Favs;
+			 }
+			 
+			 public void setComments(String Comments){
+				    this.Comments= Comments;
+				 }
+
+				 public String getComments(){
+				    return this.Comments;
+				 }
 }

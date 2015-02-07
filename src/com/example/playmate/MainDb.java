@@ -74,8 +74,6 @@ public class MainDb extends Activity {
 		protected String doInBackground(String... params) {
 				try{
 					 GetDataFromDB getdb = new GetDataFromDB();
-					 
-					 
 					 data = getdb.getDataFromDB(orig_lat,orig_long);
 					 System.out.println(data);
 				}
@@ -122,7 +120,6 @@ public class MainDb extends Activity {
 		list=(ExpandableListView)findViewById(R.id.list);
         
 		adapter=new LazyAdapter(this, users, users,flag);       
- 
         list.setAdapter(adapter);		
 	}
 	
@@ -172,11 +169,15 @@ public class MainDb extends Activity {
 	            for (int i = 0; i < jArray.length(); i++) {
 	                JSONObject json_data = jArray.getJSONObject(i);
 	                User_Post user = new User_Post();
-	                user.setId(json_data.getString("Id"));
+	                user.setPostId(json_data.getString("Post_Id"));
+	                user.setPhoneNumber(json_data.getString("PhoneNumber"));
+	      
 	                user.setUserName(json_data.getString("UserName"));
 	                user.setPost(json_data.getString("Post"));
 	                user.setDistance(json_data.getString("distance"));
 	                user.setTime(json_data.getString("Time"));
+	                user.setFavs(json_data.getString("Favourite"));
+	                user.setComments(json_data.getString("Comment"));
 	                
 	                String IMG_URL_PROFILE;
 	                IMG_URL_PROFILE="http://aashna.webatu.com/uploadedimages/"+json_data.getString("ProfilePic");
@@ -185,7 +186,7 @@ public class MainDb extends Activity {
 	                String IMG_URL_POST=null;
 	                if(!json_data.getString("Image").isEmpty())
 	                {
-	                 IMG_URL_POST="http://aashna.webatu.com/uploadedimages/"+json_data.getString("Image");
+	                 IMG_URL_POST="http://aashna.webatu.com/postedimages/"+json_data.getString("Image");
 	                }
 	                user.setPostedImage(IMG_URL_POST);
 
