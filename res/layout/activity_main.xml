@@ -1,18 +1,16 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" 
-    >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
 
-<ExpandableListView
+<!--     The PullToRefreshListView replaces a standard ListView widget.
+         give the package name where you created the custom PullToreFreshListView
+ -->
+
+    <com.example.playmate.customviews.PullToRefreshListView
         android:id="@+id/list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:divider="#b5b5b5"
-        android:dividerHeight="1dp"
-        android:saveEnabled="true"
-        android:listSelector="@drawable/list_selector"
-        android:groupIndicator="@null"        
-         />
+        android:layout_height="fill_parent" />
 
-</LinearLayout>
+</RelativeLayout>

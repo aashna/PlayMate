@@ -25,6 +25,9 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.Toast;
 
+import com.example.playmate.customviews.PullToRefreshListView;
+import com.example.playmate.customviews.PullToRefreshListView.OnRefreshListener;
+import com.example.playmate.*;
 import com.example.playmate.models.User_Post;
 
 public class MainDb extends Activity {
@@ -42,7 +45,15 @@ public class MainDb extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-        list=(ExpandableListView)findViewById(R.id.list);
+        list=(PullToRefreshListView)findViewById(R.id.list);
+        
+        ((PullToRefreshListView) list).setOnRefreshListener(new OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				// Do work to refresh the list here.
+				new call_url().execute("");	
+			}
+		});
 		
 		//prepareListData();       
 		Intent reg_intent=getIntent();
@@ -90,6 +101,7 @@ public class MainDb extends Activity {
 			dialog.dismiss();
 			 ArrayList<User_Post> users = parseJSON(data);
 	         addData(users);
+	         ((PullToRefreshListView) list).onRefreshComplete();
 		  }
 		}
 	@Override

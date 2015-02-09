@@ -1,9 +1,5 @@
 package com.example.playmate;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +9,6 @@ import org.apache.http.message.BasicNameValuePair;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -30,6 +24,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.playmate.models.User_Post;
@@ -52,7 +48,6 @@ public class LazyAdapter extends BaseExpandableListAdapter {
         this._listDataChild = listChildData;
         this.flag=flag;
     }
-
     public int getCount() {
         return data.size();
     }
@@ -91,7 +86,8 @@ public class LazyAdapter extends BaseExpandableListAdapter {
 
         smiley.setOnClickListener(new OnClickListener(){
 			@Override
-			public void onClick(View v) {                 
+			public void onClick(View v) {       
+				 smiley.setImageResource(R.drawable.smiley_green);
 				 new AddFavourite().execute(position,phone,smiley); 
 			}});
         
