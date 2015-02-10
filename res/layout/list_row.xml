@@ -98,22 +98,36 @@
     </RelativeLayout>
 
    
-    
-       <!-- Post -->
+     <RelativeLayout android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+        android:layout_below="@id/user_name"
+     >
+       <!-- Post -->      
 
     <TextView
         android:id="@+id/post"
-        android:layout_width="fill_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/user_name"
         android:layout_marginTop="7dip"
-        android:layout_toRightOf="@+id/thumbnail"
-        android:text="Hi there! :) This is my post. "
+        android:layout_toRightOf="@+id/post_type"
+        android:text="Hi there! :) This is my post. gjfusukfkubfkbksrb"
         android:textColor="#343434"
         android:textSize="15dip"
         android:textStyle="italic"
         android:layout_marginBottom="20dp" 
         android:layout_marginLeft="10dp"/>
+    
+      <ImageView
+            android:id="@+id/post_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/info" 
+            android:layout_toLeftOf="@+id/thumbnail"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp" 
+            />
+    
+      </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
 

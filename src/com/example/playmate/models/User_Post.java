@@ -2,7 +2,7 @@ package com.example.playmate.models;
 
 public class User_Post {
 	
-	private String PostId,UserName,PhoneNumber,ProfilePic,Post,IMG_URL_PROFILE,IMG_URL_POSTED,Distance,Time,Favs,Comments;	
+	private String PostId,UserName,PhoneNumber,ProfilePic,Post,IMG_URL_PROFILE,IMG_URL_POSTED,Distance,Time,Favs,Comments,PostType;	
 
 	 public void setPostId(String PostId){
 	    this.PostId= PostId;
@@ -87,4 +87,12 @@ public class User_Post {
 				 public String getComments(){
 				    return this.Comments;
 				 }
+				 
+				 public void setPostType(String PostType){
+					    this.PostType= PostType;
+					 }
+
+					 public String getPostType(){
+					    return this.PostType;
+					 }
 }

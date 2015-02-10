@@ -83,6 +83,7 @@ public class LazyAdapter extends BaseExpandableListAdapter {
         ImageButton comment=(ImageButton)convertView.findViewById(R.id.comment);
         TextView comment_num = (TextView)convertView.findViewById(R.id.comment_num);
         TextView favs = (TextView)convertView.findViewById(R.id.favourites);
+        ImageView postTypeimg=(ImageView)convertView.findViewById(R.id.post_type);
 
         smiley.setOnClickListener(new OnClickListener(){
 			@Override
@@ -126,6 +127,29 @@ public class LazyAdapter extends BaseExpandableListAdapter {
         .load(user.getPostedImage())
         .into(posted_image);
         }
+        
+        int post_type_id=0;
+        int id=Integer.valueOf(user.getPostType());
+        
+        switch(id)
+        {
+        case 1: post_type_id=R.drawable.info;
+               break;
+        case 2: post_type_id=R.drawable.question;
+                break;
+        case 3: post_type_id=R.drawable.ad;
+                break;
+        case 4: post_type_id=R.drawable.meetup;
+                break;
+        case 5: post_type_id=R.drawable.donate;
+                break;   
+        case 0: post_type_id=R.drawable.info;
+        		break;  
+        default: post_type_id=R.drawable.info;
+        		break;
+        }
+        postTypeimg.setImageDrawable(context.getResources().getDrawable(post_type_id));
+        
         return convertView;
     }
     private class AddFavourite extends AsyncTask<Object,Void,Void> {

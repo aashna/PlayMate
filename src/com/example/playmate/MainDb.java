@@ -190,6 +190,7 @@ public class MainDb extends Activity {
 	                user.setTime(json_data.getString("Time"));
 	                user.setFavs(json_data.getString("Favourite"));
 	                user.setComments(json_data.getString("Comment"));
+	                user.setPostType(json_data.getString("Post_Type"));
 	                
 	                String IMG_URL_PROFILE;
 	                IMG_URL_PROFILE="http://aashna.webatu.com/uploadedimages/"+json_data.getString("ProfilePic");
