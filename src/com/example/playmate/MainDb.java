@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -39,6 +40,9 @@ public class MainDb extends Activity {
     String orig_lat,orig_long;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
+ // Hold a reference to the current animator,
+    // so that it can be canceled mid-way.
+
    
 
 	public void onCreate(Bundle savedInstanceState) {
