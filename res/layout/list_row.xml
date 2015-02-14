@@ -212,7 +212,7 @@
        android:layout_toLeftOf="@+id/comment"
         android:layout_below="@+id/favourites"
         android:src="@drawable/smiley" 
-       android:layout_marginRight="14dp"/>
+       android:layout_marginRight="8dp"/>
 
     <ImageButton
         android:id="@+id/comment"
@@ -220,9 +220,17 @@
         android:layout_height="25dp"
         android:src="@drawable/comment" 
         android:layout_below="@+id/favourites"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="12dp"/>
+        android:layout_toLeftOf="@+id/menu"
+        android:layout_marginRight="5dp"/>
     
+     <ImageButton
+        android:id="@+id/menu"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/three_dots_menu" 
+        android:layout_below="@+id/favourites"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="1dp"/>
     </RelativeLayout>
     
 </LinearLayout>

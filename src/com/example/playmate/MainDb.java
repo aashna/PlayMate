@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.animation.Animator;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -17,18 +16,19 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ExpandableListAdapter;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.playmate.customviews.PullToRefreshListView;
 import com.example.playmate.customviews.PullToRefreshListView.OnRefreshListener;
-import com.example.playmate.*;
 import com.example.playmate.models.User_Post;
 
 public class MainDb extends Activity {
@@ -36,20 +36,18 @@ public class MainDb extends Activity {
 	String data = "";
 	Boolean flag;
 	ExpandableListView list;
-    ExpandableListAdapter adapter;
+    LazyAdapter adapter;
     String orig_lat,orig_long;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
- // Hold a reference to the current animator,
-    // so that it can be canceled mid-way.
-
-   
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
         list=(PullToRefreshListView)findViewById(R.id.list);
+        
+        registerForContextMenu(list);
         
         ((PullToRefreshListView) list).setOnRefreshListener(new OnRefreshListener() {
 			@Override
@@ -58,6 +56,8 @@ public class MainDb extends Activity {
 				new call_url().execute("");	
 			}
 		});
+        
+        list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		
 		//prepareListData();       
 		Intent reg_intent=getIntent();
@@ -76,8 +76,10 @@ public class MainDb extends Activity {
 		
 	//	adapter=new LazyAdapter(this, listDataHeader, listDataChild);        
 	//	 list.setAdapter(adapter);	
-	}
- 
+		
+		
+		    }
+
 	class call_url extends AsyncTask<String, Void,String>{
 		ProgressDialog dialog;
 		@Override
@@ -108,6 +110,41 @@ public class MainDb extends Activity {
 	         ((PullToRefreshListView) list).onRefreshComplete();
 		  }
 		}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);	
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.context_menu, menu);
+	}
+	
+	public boolean onContextItemSelected(MenuItem item) {
+	//	  AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		//  String[] names = getResources().getStringArray(R.array.names);
+		  switch(item.getItemId()) {
+		  case R.id.edit:
+		        Toast.makeText(this, "You have chosen the Edit option ",
+		   //+ getResources().getString(R.string.edit) +  " context menu option for " + names[(int)info.id],
+		                    Toast.LENGTH_SHORT).show();
+		        return true;
+		  case R.id.delete:
+			  {
+		      ExpandableListContextMenuInfo info = (ExpandableListContextMenuInfo)item.getMenuInfo();
+			  adapter.remove(list.getPackedPositionGroup(info.packedPosition));
+			  new call_url().execute("");
+			  adapter.notifyDataSetChanged();			  
+			 			  
+			  return true;
+			  }		
+			  
+		  case R.id.save:
+			  Toast.makeText(this, "You have chosen the Save option ",Toast.LENGTH_SHORT).show();
+			  return true;
+		  default:
+		        return super.onContextItemSelected(item);
+		  }
+	}
+		  
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    // Inflate the menu items for use in the action bar
@@ -136,7 +173,10 @@ public class MainDb extends Activity {
 		list=(ExpandableListView)findViewById(R.id.list);
         
 		adapter=new LazyAdapter(this, users, users,flag);       
-        list.setAdapter(adapter);		
+        list.setAdapter(adapter);	
+        
+     
+        
 	}
 	
 	private void prepareListData() {
@@ -187,6 +227,7 @@ public class MainDb extends Activity {
 	                User_Post user = new User_Post();
 	                user.setPostId(json_data.getString("Post_Id"));
 	                user.setPhoneNumber(json_data.getString("PhoneNumber"));
+	                
 	      
 	                user.setUserName(json_data.getString("UserName"));
 	                user.setPost(json_data.getString("Post"));
@@ -195,6 +236,7 @@ public class MainDb extends Activity {
 	                user.setFavs(json_data.getString("Favourite"));
 	                user.setComments(json_data.getString("Comment"));
 	                user.setPostType(json_data.getString("Post_Type"));
+	               
 	                
 	                String IMG_URL_PROFILE;
 	                IMG_URL_PROFILE="http://aashna.webatu.com/uploadedimages/"+json_data.getString("ProfilePic");

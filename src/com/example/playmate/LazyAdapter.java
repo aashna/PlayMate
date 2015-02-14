@@ -1,7 +1,9 @@
 package com.example.playmate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -33,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.playmate.models.User_Post;
 import com.squareup.picasso.Picasso;
@@ -47,11 +50,7 @@ public class LazyAdapter extends BaseExpandableListAdapter {
     private ArrayList<User_Post> _listDataChild;
     private static LayoutInflater inflater=null;
     private Animator mCurrentAnimator;
-    ImageView expandedImageView=null;
-
-    // The system "short" animation time duration, in milliseconds. This
-    // duration is ideal for subtle animations or animations that occur
-    // very frequently.
+    ImageView expandedImageView=null;   
     private int mShortAnimationDuration;
 
     public LazyAdapter(Context context, ArrayList<User_Post> d,
@@ -61,10 +60,11 @@ public class LazyAdapter extends BaseExpandableListAdapter {
         this._listDataChild = listChildData;
         this.flag=flag;
     }
+  
     public int getCount() {
-        return data.size();
+        return data.size();       
     }
-
+ 
     public Object getItem(int position) {
         return position;
     }
@@ -73,6 +73,22 @@ public class LazyAdapter extends BaseExpandableListAdapter {
         return position;
     }
     
+    public void remove(int position)
+    {    	
+    	 SharedPreferences applicationpreferences = PreferenceManager.getDefaultSharedPreferences(_context);
+	   	    final String phone_num=applicationpreferences.getString("phone_number", "");
+	   	    
+	   	 User_Post user = new User_Post();
+	     user = data.get(position);
+	   	    
+	   	   Log.e("Phone Number: ", "> " + phone_num); 
+	   	    if(phone_num.equals(user.getPhoneNumber()))
+	   	    {
+    	new DeleteItem().execute(position); 
+	   	    }
+    }
+    
+     
     public View getGroupView(final int position,final boolean isExpanded, View convertView, final ViewGroup parent) {
         View vi=convertView;
     //    String headerTitle=(String)getGroup(position);
@@ -80,11 +96,14 @@ public class LazyAdapter extends BaseExpandableListAdapter {
         	 LayoutInflater infalInflater = (LayoutInflater) this._context
                      .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
              convertView = infalInflater.inflate(R.layout.list_row, null);
+          
 
         final Context context = parent.getContext();      
         
     	SharedPreferences applicationpreferences = PreferenceManager.getDefaultSharedPreferences(context);
    	    final String phone=applicationpreferences.getString("phone_number", "");
+   	    
+   	    Log.e("phone",phone);
         
         TextView user_name = (TextView)convertView.findViewById(R.id.user_name); // User Name
         TextView post = (TextView)convertView.findViewById(R.id.post); // Post of the User
@@ -99,6 +118,7 @@ public class LazyAdapter extends BaseExpandableListAdapter {
         ImageView postTypeimg=(ImageView)convertView.findViewById(R.id.post_type);
         expandedImageView = (ImageView)convertView.findViewById(R.id.expanded_image);
         final FrameLayout fl=(FrameLayout)convertView.findViewById(R.id.container);
+        ImageView menu=(ImageView)convertView.findViewById(R.id.menu);
 
                
         mShortAnimationDuration = context.getResources().getInteger(
@@ -121,6 +141,13 @@ public class LazyAdapter extends BaseExpandableListAdapter {
 		          {
 		        	  ((ExpandableListView) parent).expandGroup(position, true);  
 		          }
+			}});
+        
+        menu.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {       
+			//	registerForContextMenu(v);
+				v.showContextMenu();
 			}});
         
         User_Post user = new User_Post();
@@ -210,7 +237,7 @@ public class LazyAdapter extends BaseExpandableListAdapter {
 
           ServiceHandler serviceClient = new ServiceHandler();
 
-          String json = serviceClient.makeServiceCall("http://aashna.webatu.com/favourite.php",
+          String json = serviceClient.makeServiceCall(URL_FAVOURITE,
                   ServiceHandler.POST, params);
 
           Log.e("Created Favourite: ", "> " + json); }
@@ -221,6 +248,43 @@ public class LazyAdapter extends BaseExpandableListAdapter {
     	     super.onPostExecute(result);
     	 }	
     }
+    
+    private class DeleteItem extends AsyncTask<Object,Void,Void> {
+
+        private static final String TAG = "FavouriteError";
+        String Request;
+        private String URL_DELETE = "http://aashna.webatu.com/delete_post.php";
+
+    	@Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+    	@Override
+    	protected Void doInBackground(Object... arg) {
+    		// TODO Auto-generated method stub
+        		int pos=(Integer)(arg[0]);      		
+
+    		 User_Post user = new User_Post();
+    	     user = data.get(pos);
+    	     String postID=user.getPostId();
+         
+          List<NameValuePair> params = new ArrayList<NameValuePair>();
+          params.add(new BasicNameValuePair("post_id", postID));
+
+          ServiceHandler serviceClient = new ServiceHandler();
+
+          String json = serviceClient.makeServiceCall(URL_DELETE,ServiceHandler.POST, params);
+
+          Log.e("Deleted: ", "> " + json); 
+ 
+    		return null;
+    }
+    	 protected void onPostExecute(Void result) {
+    	     super.onPostExecute(result);
+    	 }	
+    }
+    
     
     private void zoomImageFromThumb(Context context,FrameLayout fl,final ImageView thumbView, String pr_img) {
         // If there's an animation in progress, cancel it
@@ -395,20 +459,17 @@ public class LazyAdapter extends BaseExpandableListAdapter {
 		return groupPosition;
 	}
 
-
 	@Override
 	public long getChildId(int groupPosition, int childPosition) {
 		// TODO Auto-generated method stub
 		return childPosition;
 	}
 
-
 	@Override
 	public boolean hasStableIds() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 
 	@Override
 	public View getChildView(int groupPosition, int childPosition,
@@ -444,15 +505,12 @@ public class LazyAdapter extends BaseExpandableListAdapter {
             button_send.setHeight(15);
             button_send.setWidth(15);
           //  button_send.setLayoutParams(lp2);
-            button_send.setText("Send");
-            
-            button_send.setTextSize(10);
-            
+            button_send.setText("Send");            
+            button_send.setTextSize(10);       
        }
         txtListChild.setText("test");
         return convertView;
 	}
-
 
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
@@ -460,4 +518,3 @@ public class LazyAdapter extends BaseExpandableListAdapter {
 		return true;
 	}
 }
-
