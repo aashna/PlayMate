@@ -1,5 +1,6 @@
 package com.example.playmate;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,10 +22,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.example.playmate.customviews.PullToRefreshListView;
@@ -46,6 +47,8 @@ public class MainDb extends Activity {
 		setContentView(R.layout.activity_main);
 		
         list=(PullToRefreshListView)findViewById(R.id.list);
+        
+      
         
         registerForContextMenu(list);
         
@@ -84,7 +87,11 @@ public class MainDb extends Activity {
 		ProgressDialog dialog;
 		@Override
 		protected void onPreExecute(){
-		dialog = ProgressDialog.show(MainDb.this,null,"Loading...");
+			
+		
+			dialog = ProgressDialog.show(MainDb.this,null,"Loading...");
+			
+		
 		}
 
 		@Override
@@ -111,6 +118,40 @@ public class MainDb extends Activity {
 		  }
 		}
 	
+	public void CreatePopupMenu(View v) {
+		
+		PopupMenu mypopupmenu = new PopupMenu(this, v);		 
+		MenuInflater inflater = mypopupmenu.getMenuInflater();		 
+		inflater.inflate(R.menu.context_menu, mypopupmenu.getMenu());		 
+		mypopupmenu.show();
+	 }
+
+		public boolean onMenuItemClick(MenuItem item) {
+		 
+		switch (item.getItemId()) {
+		
+		 case R.id.edit:
+		        Toast.makeText(this, "You have chosen the Edit option ", Toast.LENGTH_SHORT).show();		                   
+		        return true;
+		  case R.id.delete:
+			  {
+		      ExpandableListContextMenuInfo info = (ExpandableListContextMenuInfo)item.getMenuInfo();
+			  adapter.remove(list.getPackedPositionGroup(info.packedPosition));
+			  new call_url().execute("");
+			  adapter.notifyDataSetChanged();			  
+			 			  
+			  return true;
+			  }		
+			  
+		  case R.id.save:
+			  Toast.makeText(this, "You have chosen the Save option ",Toast.LENGTH_SHORT).show();
+			  return true;
+		  default:		 
+		return super.onContextItemSelected(item);
+		 }
+		}
+		/*
+	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);	
@@ -121,11 +162,15 @@ public class MainDb extends Activity {
 	public boolean onContextItemSelected(MenuItem item) {
 	//	  AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 		//  String[] names = getResources().getStringArray(R.array.names);
+			
+		
 		  switch(item.getItemId()) {
 		  case R.id.edit:
-		        Toast.makeText(this, "You have chosen the Edit option ",
+		        Toast.makeText(this, "You have chosen the Edit option ", Toast.LENGTH_SHORT).show();
+		        	
+		      
 		   //+ getResources().getString(R.string.edit) +  " context menu option for " + names[(int)info.id],
-		                    Toast.LENGTH_SHORT).show();
+		                   
 		        return true;
 		  case R.id.delete:
 			  {
@@ -144,7 +189,9 @@ public class MainDb extends Activity {
 		        return super.onContextItemSelected(item);
 		  }
 	}
-		  
+	
+	
+		*/  
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    // Inflate the menu items for use in the action bar
@@ -152,6 +199,7 @@ public class MainDb extends Activity {
 	    inflater.inflate(R.menu.main_activity_actions, menu);
 	    return super.onCreateOptionsMenu(menu);
 	}
+	
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

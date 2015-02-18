@@ -20,11 +20,16 @@ import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,10 +38,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+import com.example.playmate.MainDb.call_url;
 import com.example.playmate.models.User_Post;
 import com.squareup.picasso.Picasso;
 
@@ -88,6 +97,22 @@ public class LazyAdapter extends BaseExpandableListAdapter {
 	   	    }
     }
     
+    public void edit(int position)
+    {
+    	 SharedPreferences applicationpreferences = PreferenceManager.getDefaultSharedPreferences(_context);
+	   	    final String phone_num=applicationpreferences.getString("phone_number", "");
+	   	    
+	   	 User_Post user = new User_Post();
+	     user = data.get(position);
+	   	    
+	   	   Log.e("Phone Number: ", "> " + phone_num); 
+	   	    if(phone_num.equals(user.getPhoneNumber()))
+	   	    {
+ 	         new EditItem().execute(position); 
+	   	    }
+    	
+    }
+    
      
     public View getGroupView(final int position,final boolean isExpanded, View convertView, final ViewGroup parent) {
         View vi=convertView;
@@ -106,7 +131,7 @@ public class LazyAdapter extends BaseExpandableListAdapter {
    	    Log.e("phone",phone);
         
         TextView user_name = (TextView)convertView.findViewById(R.id.user_name); // User Name
-        TextView post = (TextView)convertView.findViewById(R.id.post); // Post of the User
+        final TextView post = (TextView)convertView.findViewById(R.id.post); // Post of the User
         TextView distance = (TextView)convertView.findViewById(R.id.dist); // Distance
         TextView time = (TextView)convertView.findViewById(R.id.time); // Timestamp
         ImageView posted_image=(ImageView)convertView.findViewById(R.id.posted_img); // Posted Image
@@ -143,11 +168,13 @@ public class LazyAdapter extends BaseExpandableListAdapter {
 		          }
 			}});
         
-        menu.setOnClickListener(new OnClickListener(){
+        menu.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v) {       
 			//	registerForContextMenu(v);
-				v.showContextMenu();
+			//	v.showContextMenu();
+				CreatePopupMenu(fl,position);
+				
 			}});
         
         User_Post user = new User_Post();
@@ -249,6 +276,84 @@ public class LazyAdapter extends BaseExpandableListAdapter {
     	 }	
     }
     
+public void CreatePopupMenu(final View v, int position) {
+	
+	  final int myposition=position;
+		
+		PopupMenu mypopupmenu = new PopupMenu(_context, v);		 
+		MenuInflater inflater = mypopupmenu.getMenuInflater();		 
+		inflater.inflate(R.menu.context_menu, mypopupmenu.getMenu());			
+		mypopupmenu.show();
+		
+		final TextView tv=(TextView)v.findViewById(R.id.post);
+		final EditText et=(EditText)v.findViewById(R.id.edit_post); 
+		
+		mypopupmenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+			public boolean onMenuItemClick(MenuItem item) {			
+				 
+			
+				 
+				 Log.e("View=",v.toString());
+				 
+				switch (item.getItemId()) {
+				
+				 case R.id.edit:					 
+				     //   Toast.makeText(_context, "You have chosen the Edit option ", Toast.LENGTH_SHORT).show();	
+				      { Log.e("TEXT=",tv.getText().toString()); 
+				    	 
+				       tv.setVisibility(v.GONE);				      
+				       et.setVisibility(v.VISIBLE);
+				       et.setText(tv.getText().toString());
+				       et.setFocusable(true);
+				       et.setImeOptions(EditorInfo.IME_ACTION_DONE);
+				       et.setImeActionLabel("Update", EditorInfo.IME_ACTION_DONE);
+				       
+				   	et.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+
+						@Override
+						public boolean onEditorAction(TextView v, int actionId,KeyEvent event) {
+							// TODO Auto-generated method stub
+							boolean handled=false;
+							Log.e("ONEDITOR ENTERED","yes");
+							 if (actionId == EditorInfo.IME_ACTION_DONE) {
+							et.setVisibility(v.GONE);
+							tv.setText(et.getText().toString());
+							tv.setVisibility(v.VISIBLE);
+							  new EditItem().execute(myposition,et.getText().toString()); 
+							handled=true;
+							
+							 }
+							return handled;
+						}});
+				       return true;
+				      }
+				  case R.id.delete:
+					  {		   
+				      remove(myposition);
+				      MainDb object=new MainDb();
+					  object.new call_url().execute("");
+					  notifyDataSetChanged();			  			  
+					  return true;
+					  }		
+					  
+				  case R.id.save:
+					  Toast.makeText(_context, "You have chosen the Save option ",Toast.LENGTH_SHORT).show();
+					  return true;
+				  default:		 
+			//return super.onContextItemSelected(item);
+					  return true;
+				 }
+				
+				}
+			
+		}); Log.e("NEW_TEXT=",et.getText().toString());
+	
+	 }
+
+	
+    
+    
+    
     private class DeleteItem extends AsyncTask<Object,Void,Void> {
 
         private static final String TAG = "FavouriteError";
@@ -277,6 +382,46 @@ public class LazyAdapter extends BaseExpandableListAdapter {
           String json = serviceClient.makeServiceCall(URL_DELETE,ServiceHandler.POST, params);
 
           Log.e("Deleted: ", "> " + json); 
+ 
+    		return null;
+    }
+    	 protected void onPostExecute(Void result) {
+    	     super.onPostExecute(result);
+    	 }	
+    }
+    
+    private class EditItem extends AsyncTask<Object,Void,Void> {
+
+        private static final String TAG = "FavouriteError";
+        String Request;
+        private String URL_DELETE = "http://aashna.webatu.com/edit_post.php";
+
+    	@Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+    	@Override
+    	protected Void doInBackground(Object... arg) {
+    		// TODO Auto-generated method stub
+        		int pos=(Integer)(arg[0]);      
+        		String editted_post=(String)(arg[1]);
+
+    		 User_Post user = new User_Post();
+    	     user = data.get(pos);
+    	     String postID=user.getPostId();   	     
+    	    
+         
+          List<NameValuePair> params = new ArrayList<NameValuePair>();
+          params.add(new BasicNameValuePair("post_id", postID));
+          params.add(new BasicNameValuePair("edit_post", editted_post));
+          
+
+          ServiceHandler serviceClient = new ServiceHandler();
+
+          String json = serviceClient.makeServiceCall(URL_DELETE,ServiceHandler.POST, params);
+
+          Log.e("Edited: ", "> " + json); 
  
     		return null;
     }
